@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <title>Employee Management</title>
+</head>
+<body>
+    <h1>Employee Management</h1>
+    <div id="employee-list"></div>
+    <input type="text" id="employee-name" placeholder="Employee Name">
+    <input type="text" id="employee-position" placeholder="Position">
+    <input type="number" id="employee-salary" placeholder="Salary">
+    <button id="add-employee">Add Employee</button>
+    <input type="hidden" id="employee-id" placeholder="Employee ID">
+
+    <script>
+        const employeeList = document.getElementById('employee-list');
+        const employeeName = document.getElementById('employee-name');
+        const employeePosition = document.getElementById('employee-position');
+        const employeeSalary = document.getElementById('employee-salary');
+        const addEmployeeButton = document.getElementById('add-employee');
+        const employeeId = document.getElementById('employee-id');
+
+        function fetchEmployees() {
+            fetch('http://localhost:3000/employees')
+                .then(response => response.json())
+                .then(data => {
+                    employeeList.innerHTML = ''; 
+                    
+                    data.forEach(employee => {
+                        const div = document.createElement('div');
+                        
+                        div.innerHTML = `Name: ${employee.name}, Position: ${employee.position}, Salary: ${employee.salary} 
+                        <button onclick="editEmployee(${employee.id}, '${employee.name}', '${employee.position}', ${employee.salary})">Edit</button>
+                        <button onclick="deleteEmployee(${employee.id})">Delete</button>`;
+                        employeeList.appendChild(div);  
+                    });
+                });
+        }
+
+        addEmployeeButton.onclick = () => {
+            const name = employeeName.value;
+            const position = employeePosition.value;
+            const salary = employeeSalary.value;
+            const id = employeeId.value;
+
+            if (id)
+ {
+                fetch(`http://localhost:3000/employees/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, position, salary })
+                }).then(() => {
+                    employeeId.value = '';
+                    employeeName.value = '';
+                    employeePosition.value = '';
+                    employeeSalary.value = '';
+                    fetchEmployees();
+                });
+            } else {
+                fetch('http://localhost:3000/employees', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, position, salary })
+                }).then(() => {
+                    employeeName.value = '';   
+                    employeePosition.value = '';
+                    employeeSalary.value = '';
+                    fetchEmployees();
+                });
+            }
+        };
+
+
+        function editEmployee(id, name, position, salary) {
+            employeeId.value = id;
+            employeeName.value = name;
+            employeePosition.value = position;
+            employeeSalary.value = salary;
+        }
+
+        function deleteEmployee(id)
+ {
+            fetch(`http://localhost:3000/employees/${id}`, {
+                method: 'DELETE'
+            }).then(() => {
+                fetchEmployees();
+            });
+        }
+
+        fetchEmployees();
+    </script>
+</body>
+</html>
