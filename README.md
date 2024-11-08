@@ -5,7 +5,7 @@ The Employee Management System is a simple web application that allows users to 
 
 ## Features
 - **CRUD Operations**: Create, read, update, and delete employee records.
-- **RESTful API**: Interacts with a RESTful API built using Express.js.
+- **Express.js**: Node.js framework that make handling routes, requests, and responses easier.
 - **Frontend**: Simple HTML interface for managing employee data.
 - **Database**: MySQL database for persistent storage of employee records.
 
@@ -32,7 +32,8 @@ The Employee Management System is a simple web application that allows users to 
 ### Installation
 
 1. **Clone the repository**:
-   git clone <repository-url>
+   git clone < https://github.com/annamnatsakanyan/EmployeeManagement.git>
+   
    cd employee-management
    
 Install dependencies:
@@ -46,8 +47,12 @@ Install dependencies:
 
 
 ### Create a database named employee_management:
+
   
   * Create a table named employees with the following schema:
+
+  * Open mysql from command line: mysql -u root -p
+    
 
     sql
 
@@ -74,7 +79,6 @@ Install dependencies:
 
     **Open the `db.js` file in the config directory and update the database connection settings if necessary (e.g., username, password).
   
-  * Start the server:
 
 ### Run Command
 
